@@ -19,6 +19,12 @@ $ docker build -t fpcc .
 
 It may takes a few minutes for installing necessary packages and compiling the whole GSL Library, note that both FPCC and ATOMU will be installed after build the docker.
 
+You can also just pull the image from docker:
+```
+$ docker pull fpccdocker/fpcc:latest
+```
+
+
 ## Usage
 
 Run this docker's container with interactive mode, the working directory is at `/fpcc`.
