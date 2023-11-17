@@ -76,5 +76,7 @@ WORKDIR /atom
 RUN make
 # Ready for ATOM environments
 
+WORKDIR /fpcc
+
 
 
