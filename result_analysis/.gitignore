@@ -1,0 +1,4 @@
+outs_atom/
+outs_fpcc/
+CCgraph/
+*.out
