@@ -19,9 +19,9 @@ $ docker build -t fpcc .
 
 It may takes a few minutes for installing necessary packages and compiling the whole GSL Library, note that both FPCC and ATOMU will be installed after build the docker.
 
-You can also just pull the image from docker:
+You can also just pull the image from docker (**recommond**):
 ```
-$ docker pull fpccdocker/fpcc:latest
+$ docker pull fpccdocker/fpcc:v1.0
 ```
 
 
@@ -130,6 +130,23 @@ Figure 8 will be stored in /fpcc/result_analysis/graph/err_num_stable.pdf
 
 Figure 9 will be stored in /fpcc/result_analysis/graph/top1_err_stable.pdf
 
+```
+$ cd /fpcc/eftTest/gslbench
+$ ./efttest.fp.o
+```
+
+The results of Table 5 for eftsanitizer will output.
+
+```
+$ cd /fpcc/fpgenBench/bench
+$ ./run.sh
+```
+
+Results of Table 3 for fpcc will be stored in output2.csv
+(Results for FPGen please follow the Readme in https://github.com/ucd-plse/FPGen)
+
+
+
 #### Getting the tracing results in section 5.4 and appendix
 
 Run traceErrors42.py to get the trace results:
@@ -144,7 +161,7 @@ Results will be stored in /fpcc/result_analysis/errorTrace.out. And run script i
 $ python3 errorTraceAna.py
 ```
 
-Results for each function will be stored in /fpcc/result_analysis/localErr.xls
+Results for each function will be stored in /fpcc/result_analysis/localErr.xls (Original data for Table 4)
 
 ## GSL Function List and mpmath Support
 
