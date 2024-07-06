@@ -166,7 +166,7 @@ Figure 9 will be stored in /fpcc/result_analysis/graph/top1_err_stable.pdf
 
 ```
 $ cd /fpcc/eftTest/gslbench
-$ ./efttest.fp.o
+$ ./run.sh 
 ```
 
 The results of Table 5 for eftsanitizer will direct output.
