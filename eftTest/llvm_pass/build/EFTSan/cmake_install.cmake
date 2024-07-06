@@ -1,4 +1,4 @@
-# Install script for directory: /fpcc/eftTest/copy_file/llvm_pass/EFTSan
+# Install script for directory: /fpcc/eftTest/llvm_pass/EFTSan
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

@@ -43,14 +43,14 @@ double doubleULPori(double d) {
 double doubleULP(double d) {
     return d*2.2e-16;
 }
-extern "C" double eftsan_handle_MULDIV(double lfit, double rfit) {
+extern "C" double fpccsan_handle_MULDIV(double lfit, double rfit) {
     if((lfit==0.0)&&(rfit==0.0)){
       return 1.0;
     }
     return lfit + rfit;
 }
 
-// eftsan_trace: a function that user can set a breakpoint on to
+// fpccsan_trace: a function that user can set a breakpoint on to
 // generate DAGs
 
 #ifdef METADATA_AS_TRIE
@@ -85,7 +85,7 @@ smem_entry* m_get_shadowaddress (size_t address){
 
 
 #ifdef TRACING
-extern "C" void eftsan_fpcore(temp_entry *cur){
+extern "C" void fpccsan_fpcore(temp_entry *cur){
   if(cur){
     if(m_lock_key_map[cur->op1_lock] != cur->op1_key ){
       if(m_var_map.count(cur) > 0){
@@ -127,21 +127,21 @@ extern "C" void eftsan_fpcore(temp_entry *cur){
     }
     if(cur->lhs != NULL){
       if(cur->lhs->timestamp < cur->timestamp){
-        eftsan_fpcore(cur->lhs);
+        fpccsan_fpcore(cur->lhs);
       }
     }
     if(cur->rhs != NULL){
       if(cur->rhs->timestamp < cur->timestamp){
-        eftsan_fpcore(cur->rhs);
+        fpccsan_fpcore(cur->rhs);
       }
     }
     varString += ")";
   }
 }
 
-extern "C" void eftsan_get_fpcore(temp_entry *cur){
+extern "C" void fpccsan_get_fpcore(temp_entry *cur){
   fflush(stdout);
-  eftsan_fpcore(cur);
+  fpccsan_fpcore(cur);
   std::string out_fpcore;
   out_fpcore = "(FPCore ( ";
 
@@ -157,7 +157,7 @@ extern "C" void eftsan_get_fpcore(temp_entry *cur){
   varCount = 0;
 }
 
-extern "C" void eftsan_trace_less(smem_entry *current){
+extern "C" void fpccsan_trace_less(smem_entry *current){
   m_expr.clear();
   m_expr.push_back(current);
   FILE *fp = popen("/usr/bin/less", "w");
@@ -207,10 +207,10 @@ double GLOBAL_ERROR;
 extern "C" void foo_return_global_error(double *resErr){
   *resErr = GLOBAL_ERROR;
 }
-extern "C" void eftsan_get_error_final(smem_entry *cur){
+extern "C" void fpccsan_get_error_final(smem_entry *cur){
   GLOBAL_ERROR = cur->error;
 }
-extern "C" void eftsan_trace(smem_entry *current){
+extern "C" void fpccsan_trace(smem_entry *current){
   m_expr.clear();
   m_expr.push_back(current);
   int level;
@@ -249,13 +249,13 @@ extern "C" void eftsan_trace(smem_entry *current){
   std::cout<<"\n\n";
 }
 #endif
-// eftsan_check_branch, eftsan_check_conversion, eftsan_check_error are
+// fpccsan_check_branch, fpccsan_check_conversion, fpccsan_check_error are
 // functions that user can set breakpoint on
-extern "C" void eftsan_handle_fptrunc(float val, smem_entry* op1){
+extern "C" void fpccsan_handle_fptrunc(float val, smem_entry* op1){
   //op1->computed = val;
 }
 
-extern "C" void eftsan_check_conv_si(int val, smem_entry*res){
+extern "C" void fpccsan_check_conv_si(int val, smem_entry*res){
   double conv = res->computed + res->error;
   int real_val = conv;
   if(real_val != val){
@@ -263,7 +263,7 @@ extern "C" void eftsan_check_conv_si(int val, smem_entry*res){
   }
 }
 
-extern "C" void eftsan_check_conv_ui(size_t val, smem_entry*res){
+extern "C" void fpccsan_check_conv_ui(size_t val, smem_entry*res){
   double conv = res->computed + res->error;
   size_t real_val = conv;
   if(real_val != val){
@@ -271,7 +271,7 @@ extern "C" void eftsan_check_conv_ui(size_t val, smem_entry*res){
   }
 }
 
-extern "C" bool eftsan_check_branch_f1(float op1d,
+extern "C" bool fpccsan_check_branch_f1(float op1d,
 				     float op2d, smem_entry* op2,
 				     size_t fcmpFlag, bool computedRes,
 				     size_t lineNo){
@@ -287,7 +287,7 @@ extern "C" bool eftsan_check_branch_f1(float op1d,
   return realRes;
 }
 
-extern "C" bool eftsan_check_branch_f2(float op1d, smem_entry* op1,
+extern "C" bool fpccsan_check_branch_f2(float op1d, smem_entry* op1,
 				     float op2d, 
 				     size_t fcmpFlag, bool computedRes,
 				     size_t lineNo){
@@ -303,7 +303,7 @@ extern "C" bool eftsan_check_branch_f2(float op1d, smem_entry* op1,
   return realRes;
 }
 
-extern "C" bool eftsan_check_branch_f(float op1d, smem_entry* op1,
+extern "C" bool fpccsan_check_branch_f(float op1d, smem_entry* op1,
 				     float op2d, smem_entry* op2,
 				     size_t fcmpFlag, bool computedRes,
 				     size_t lineNo){
@@ -319,7 +319,7 @@ extern "C" bool eftsan_check_branch_f(float op1d, smem_entry* op1,
   return realRes;
 }
 
-extern "C" bool eftsan_check_branch_d1(double op1d,
+extern "C" bool fpccsan_check_branch_d1(double op1d,
 				     double op2d, smem_entry* op2,
 				     size_t fcmpFlag, bool computedRes,
 				     size_t lineNo){
@@ -338,7 +338,7 @@ extern "C" bool eftsan_check_branch_d1(double op1d,
   return realRes;
 }
 
-extern "C" bool eftsan_check_branch_d2(double op1d, smem_entry* op1,
+extern "C" bool fpccsan_check_branch_d2(double op1d, smem_entry* op1,
 				     double op2d,
 				     size_t fcmpFlag, bool computedRes,
 				     size_t lineNo){
@@ -357,7 +357,7 @@ extern "C" bool eftsan_check_branch_d2(double op1d, smem_entry* op1,
   return realRes;
 }
 
-extern "C" bool eftsan_check_branch_d(double op1d, smem_entry* op1,
+extern "C" bool fpccsan_check_branch_d(double op1d, smem_entry* op1,
 				     double op2d, smem_entry* op2,
 				     size_t fcmpFlag, bool computedRes,
 				     size_t lineNo){
@@ -375,7 +375,7 @@ extern "C" bool eftsan_check_branch_d(double op1d, smem_entry* op1,
   }
   return realRes;
 }
-extern "C" unsigned int  eftsan_check_conversion(long real, long computed,
+extern "C" unsigned int  fpccsan_check_conversion(long real, long computed,
 						smem_entry *realRes){
   if(real != computed){
     return 1;
@@ -383,10 +383,10 @@ extern "C" unsigned int  eftsan_check_conversion(long real, long computed,
   return 0;
 }
 
-extern "C" void eftsan_init(int size) {
+extern "C" void fpccsan_init(int size) {
   if (!m_init_flag) {
     //FILE *m_bitserr;
-    m_fpcore = fopen ("eftsan.fpcore","w");
+    m_fpcore = fopen ("fpccsan.fpcore","w");
     m_errfile = fopen ("error.log","w");
     //m_bitserr = fopen ("t0.txt","w");  
     m_init_flag = true;
@@ -434,7 +434,7 @@ long double m_get_longdouble(temp_entry *real) {
   return mpfr_get_ld(real->val, MPFR_RNDN);
 }
 
-extern "C" void eftsan_handle_memset(void *toAddr, int val,
+extern "C" void fpccsan_handle_memset(void *toAddr, int val,
     int size) {
 
   size_t toAddrInt = (size_t)(toAddr);
@@ -453,7 +453,7 @@ extern "C" void eftsan_handle_memset(void *toAddr, int val,
   }
 }
 
-extern "C" void eftsan_handle_memcpy(smem_entry* toAddr, smem_entry* fromAddr, int size){
+extern "C" void fpccsan_handle_memcpy(smem_entry* toAddr, smem_entry* fromAddr, int size){
   
   memcpy(toAddr, fromAddr, size);
   /*
@@ -469,7 +469,7 @@ void m_print_real(mpfr_t mpfr_val){
   mpfr_out_str (stdout, 10, 15, mpfr_val, MPFR_RNDN);
 }
 
-extern "C" void eftsan_copy_phi(smem_entry* src, smem_entry* dest, size_t slot_idx){
+extern "C" void fpccsan_copy_phi(smem_entry* src, smem_entry* dest, size_t slot_idx){
   dest->error = src->error;
   dest->computed = src->computed;
   dest->timestamp = src->timestamp;
@@ -692,7 +692,7 @@ int m_get_depth(smem_entry *current){
 }
 #endif
 
-extern "C" void eftsan_func_init(size_t totalArgs, size_t *m_stack_top) {
+extern "C" void fpccsan_func_init(size_t totalArgs, size_t *m_stack_top) {
 //  *m_stack_top = *m_stack_top + totalArgs;
 
 //  if(*m_stack_top >= MAX_STACK_SIZE){
@@ -701,7 +701,7 @@ extern "C" void eftsan_func_init(size_t totalArgs, size_t *m_stack_top) {
 //  }
 }
 
-extern "C" void eftsan_func_exit(long totalArgs) {
+extern "C" void fpccsan_func_exit(long totalArgs) {
 //  m_stack_top = m_stack_top - totalArgs;
 }
 
@@ -709,7 +709,7 @@ extern "C" void eftsan_func_exit(long totalArgs) {
    into the shadow stack. The space for the return value is allocated
    by the caller. This happens in the callee. */
 
-extern "C" void eftsan_set_return_vec(smem_entry *dest, smem_entry* src, size_t totalArgs, size_t m_stack_top) {
+extern "C" void fpccsan_set_return_vec(smem_entry *dest, smem_entry* src, size_t totalArgs, size_t m_stack_top) {
   //smem_entry *dest = &(m_shadow_stack[m_stack_top - totalArgs + 1]); 
   dest->error = src->error;
   dest->computed = src->computed;
@@ -722,7 +722,7 @@ extern "C" void eftsan_set_return_vec(smem_entry *dest, smem_entry* src, size_t 
 #endif
 }
 
-extern "C" void eftsan_set_return(smem_entry *dest, smem_entry* src, size_t idx) {
+extern "C" void fpccsan_set_return(smem_entry *dest, smem_entry* src, size_t idx) {
   
   dest->error = src->error;
   dest->computed = src->computed;
@@ -738,40 +738,40 @@ extern "C" void eftsan_set_return(smem_entry *dest, smem_entry* src, size_t idx)
 
 /* Retrieve the metadata for the return value from the shadow
    stack. This happens in the caller. */
-extern "C" smem_entry* eftsan_get_return(size_t m_stack_top, smem_entry* dest) {
+extern "C" smem_entry* fpccsan_get_return(size_t m_stack_top, smem_entry* dest) {
 
 //  smem_entry *src = &(m_shadow_stack[m_stack_top - totalArgs]); //save return m_stack_top - totalArgs 
 //  return src;
 }
 
-extern "C" smem_entry* eftsan_get_return_vec(size_t totalArgs, size_t m_stack_top) {
+extern "C" smem_entry* fpccsan_get_return_vec(size_t totalArgs, size_t m_stack_top) {
 
 //  smem_entry *src = &(m_shadow_stack[m_stack_top - totalArgs + 1]); //save return m_stack_top - totalArgs 
  // return src;
 }
 
-extern "C" void eftsan_handle_load(smem_entry* dest, smem_entry* src){
+extern "C" void fpccsan_handle_load(smem_entry* dest, smem_entry* src){
   loadIns++;
 }
 
-extern "C" void eftsan_handle_store(smem_entry* dest, smem_entry* src){
+extern "C" void fpccsan_handle_store(smem_entry* dest, smem_entry* src){
   storeIns++;
 }
 
 /* The callee retrieves the metadata from the shadow stack */
 
-extern "C" smem_entry* eftsan_get_arg(size_t argIdx) {
+extern "C" smem_entry* fpccsan_get_arg(size_t argIdx) {
 
   smem_entry *dst = m_arg_stack[argIdx];
   return dst;
 }
 
-extern "C" void eftsan_set_arg_f(smem_entry* src, float op, bool consFlag, size_t argIdx) {
+extern "C" void fpccsan_set_arg_f(smem_entry* src, float op, bool consFlag, size_t argIdx) {
   m_arg_stack[argIdx] = src;
   assert(argIdx < MAX_STACK_SIZE && "Arg index is more than MAX_STACK_SIZE");
 }
 
-extern "C" void eftsan_set_arg_d(smem_entry* src, double op, bool consFlag, size_t argIdx) {
+extern "C" void fpccsan_set_arg_d(smem_entry* src, double op, bool consFlag, size_t argIdx) {
 
   if(src == nullptr)
     return;
@@ -809,7 +809,7 @@ double two_product(smem_entry* op1, smem_entry* op2, double computedRes){
 //__muldc3(r1, i1, r2, i2)
 //x = a + ib and
 //y = c + id
-extern "C" void eftsan_mpfr___muldc3(smem_entry* op1, 
+extern "C" void fpccsan_mpfr___muldc3(smem_entry* op1, 
 				                         smem_entry* lhs, 
                                  double op1d,
                                  smem_entry* res, 
@@ -843,7 +843,7 @@ function [p, e, f, g] = TwoProductCplx(x, y)
 }
 */
 
-extern "C" void eftsan_set_epsilon_precision_const(smem_entry* res){
+extern "C" void fpccsan_set_epsilon_precision_const(smem_entry* res){
   /*
   res->computed = std::numeric_limits<float>::epsilon();
   res->error = -1.19209289e-7;
@@ -856,28 +856,28 @@ extern "C" void eftsan_set_epsilon_precision_const(smem_entry* res){
   */
 }
 
-extern "C" void eftsan_load_reset(double computed, double load, int cond){
+extern "C" void fpccsan_load_reset(double computed, double load, int cond){
 //  m_slot_unique[instId] = timestamp;
 }
-extern "C" void eftsan_index(size_t idx, smem_entry* res){
+extern "C" void fpccsan_index(size_t idx, smem_entry* res){
 //  m_slot_unique[instId] = timestamp;
 }
-extern "C" void eftsan_slot(size_t instId, size_t timestamp){
+extern "C" void fpccsan_slot(size_t instId, size_t timestamp){
 //  m_slot_unique[instId] = timestamp;
 }
-extern "C" void eftsan_slot_load_reset(size_t instId, size_t timestamp){
+extern "C" void fpccsan_slot_load_reset(size_t instId, size_t timestamp){
 //  m_slot_unique[instId] = timestamp;
 }
-extern "C" void eftsan_slot_load(size_t instId, size_t timestamp){
+extern "C" void fpccsan_slot_load(size_t instId, size_t timestamp){
 //  m_slot_unique[instId] = timestamp;
 }
-extern "C" void eftsan_slot_store(size_t instId, size_t timestamp){
+extern "C" void fpccsan_slot_store(size_t instId, size_t timestamp){
 //  m_slot_unique[instId] = timestamp;
 }
-extern "C" smem_entry* eftsan_valid(size_t ts, size_t tsmap, size_t instId){
+extern "C" smem_entry* fpccsan_valid(size_t ts, size_t tsmap, size_t instId){
 }
 /*
-extern "C" smem_entry* eftsan_valid(size_t ts, size_t instId, size_t u_ts, smem_entry* res){
+extern "C" smem_entry* fpccsan_valid(size_t ts, size_t instId, size_t u_ts, smem_entry* res){
   smem_entry *tmp = NULL;
   
   if(ts == m_slot_unique[instId]){
@@ -888,7 +888,7 @@ extern "C" smem_entry* eftsan_valid(size_t ts, size_t instId, size_t u_ts, smem_
   }
 }
 */
-extern "C" smem_entry* eftsan_get_op_metadata(size_t op1Ts, size_t op2Ts, size_t resTs, size_t op1InstId, size_t op2InstId, 
+extern "C" smem_entry* fpccsan_get_op_metadata(size_t op1Ts, size_t op2Ts, size_t resTs, size_t op1InstId, size_t op2InstId, 
                                               size_t resInstId, smem_entry* op1, smem_entry* op2){
   m_slot_unique[resInstId] = resTs;
 
@@ -900,25 +900,25 @@ extern "C" smem_entry* eftsan_get_op_metadata(size_t op1Ts, size_t op2Ts, size_t
   }
 }
 
-extern "C" void eftsan_set_constant(smem_entry *res, size_t ts, size_t insId){
+extern "C" void fpccsan_set_constant(smem_entry *res, size_t ts, size_t insId){
 }
 
-extern "C" void eftsan_sub(double res, double op1, double op2,
+extern "C" void fpccsan_sub(double res, double op1, double op2,
                       smem_entry *res_, smem_entry *op1_, smem_entry *op2_, size_t instId, double err, double c_err){
   m_get_error(res_, res);
 }
 
-extern "C" void eftsan_sum(double res, double op1, double op2,
+extern "C" void fpccsan_sum(double res, double op1, double op2,
                       smem_entry *res_, smem_entry *op1_, smem_entry *op2_, size_t instId, double err, double c_err){
   m_get_error(res_, res);
 }
 
-extern "C" void eftsan_mul(double res, double op1, double op2,
+extern "C" void fpccsan_mul(double res, double op1, double op2,
                       smem_entry *res_, smem_entry *op1_, smem_entry *op2_, size_t instId, double err, double c_err){
   m_get_error(res_, res);
 }
 
-extern "C" void eftsan_div(double res, double op1, double op2,
+extern "C" void fpccsan_div(double res, double op1, double op2,
                       smem_entry *res_, smem_entry *op1_, smem_entry *op2_, size_t instId, double err, double c_err){
   m_get_error(res_, res);
 }
@@ -944,7 +944,7 @@ unsigned long m_ulpd(double x, double y) {
 }
 
 
-extern "C" void eftsan_finish() {
+extern "C" void fpccsan_finish() {
   /*
   fprintf(m_errfile, "Error above %d bits found %zd\n", ERRORTHRESHOLD, errorCount);
   fprintf(m_errfile, "Total NaN found %zd\n", nanCount);
@@ -984,11 +984,11 @@ extern "C" void eftsan_finish() {
   fclose(m_errfile);
 }
 
-extern "C" void eftsan_print_error(double err){
+extern "C" void fpccsan_print_error(double err){
 //  printf("err:%f\n", err);
 }
 
-extern "C" void eftsan_print_err(double err){
+extern "C" void fpccsan_print_err(double err){
 //  printf("err:%f\n", err);
 }
 
@@ -1012,7 +1012,7 @@ print_trace (unsigned long bitsError)
   free (strings);
 }
 
-extern "C" void eftsan_report_inf(smem_entry *real){
+extern "C" void fpccsan_report_inf(smem_entry *real){
     infCount++;
 #if STATIC
     m_inf_map[real->lineno]++;
@@ -1025,7 +1025,7 @@ extern "C" void eftsan_report_inf(smem_entry *real){
 #endif
 }
 
-extern "C" void eftsan_report_nan(smem_entry *real){
+extern "C" void fpccsan_report_nan(smem_entry *real){
     nanCount++;
 #if STATIC
     m_nan_map[real->lineno]++;
@@ -1039,9 +1039,9 @@ extern "C" void eftsan_report_nan(smem_entry *real){
 }
 
 int count = 0;
-extern "C" void eftsan_get_error(smem_entry *real, double computed){
+extern "C" void fpccsan_get_error(smem_entry *real, double computed){
   m_update_error(real, computed);
-  //eftsan_trace(real);
+  //fpccsan_trace(real);
 }
 
 
@@ -1466,7 +1466,7 @@ void handle_math_d(fp_op opCode, double op1d, smem_entry *op,
   m_get_error(res, computedResd);
 }
 
-extern "C" void eftsan_mpfr_cbrt(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_cbrt(smem_entry* op1, 
                                  double op1d,
                                  smem_entry* res, 
                                  double computedRes,
@@ -1479,7 +1479,7 @@ extern "C" void eftsan_mpfr_cbrt(smem_entry* op1,
   handle_math_d_long(CBRT, op1d, op1, computedRes, res, linenumber, ts);  
 }
 
-extern "C" void eftsan_mpfr_floor(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_floor(smem_entry* op1, 
                                  double op1d,
                                  smem_entry* res, 
                                  double computedRes,
@@ -1493,7 +1493,7 @@ extern "C" void eftsan_mpfr_floor(smem_entry* op1,
   
 }
 
-extern "C" void eftsan_mpfr_llvm_f(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_llvm_f(smem_entry* op1, 
                                  float op1d,
                                  smem_entry* res, 
                                  float computedRes,
@@ -1507,7 +1507,7 @@ extern "C" void eftsan_mpfr_llvm_f(smem_entry* op1,
   
 }
 
-extern "C" void eftsan_mpfr_atanh(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_atanh(smem_entry* op1, 
 				double op1d,
 				smem_entry* res, 
 				double computedRes,
@@ -1521,7 +1521,7 @@ extern "C" void eftsan_mpfr_atanh(smem_entry* op1,
 
 }
 
-extern "C" void eftsan_mpfr_tanh(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_tanh(smem_entry* op1, 
 				double op1d,
 				smem_entry* res, 
 				double computedRes,
@@ -1535,7 +1535,7 @@ extern "C" void eftsan_mpfr_tanh(smem_entry* op1,
 
 }
 
-extern "C" void eftsan_mpfr_tan(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_tan(smem_entry* op1, 
 			       double op1d,
 			       smem_entry* res, 
 			       double computedRes,
@@ -1549,7 +1549,7 @@ extern "C" void eftsan_mpfr_tan(smem_entry* op1,
 
 }
 
-extern "C" void eftsan_mpfr_acosh(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_acosh(smem_entry* op1, 
 				double op1d,
 				smem_entry* res, 
 				double computedRes,
@@ -1562,7 +1562,7 @@ extern "C" void eftsan_mpfr_acosh(smem_entry* op1,
   handle_math_d_long(ACOSH, op1d, op1, computedRes, res, linenumber, ts);
 }
 
-extern "C" void eftsan_mpfr_acos(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_acos(smem_entry* op1, 
 				double op1d,
 				smem_entry* res, 
 				double computedRes,
@@ -1575,7 +1575,7 @@ extern "C" void eftsan_mpfr_acos(smem_entry* op1,
   handle_math_d_long(ACOS, op1d, op1, computedRes, res, linenumber, ts);
 }
 
-extern "C" void eftsan_mpfr_cosh(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_cosh(smem_entry* op1, 
 				double op1d,
 				smem_entry* res, 
 				double computedRes,
@@ -1589,7 +1589,7 @@ extern "C" void eftsan_mpfr_cosh(smem_entry* op1,
 
 }
 
-extern "C" void eftsan_mpfr_cos(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_cos(smem_entry* op1, 
 			       double op1d,
 			       smem_entry* res, 
 			       double computedRes,
@@ -1603,7 +1603,7 @@ extern "C" void eftsan_mpfr_cos(smem_entry* op1,
 
 }
 
-extern "C" void eftsan_mpfr_llvm_cos_f64(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_llvm_cos_f64(smem_entry* op1, 
 			       double op1d,
 			       smem_entry* res, 
 			       double computedRes,
@@ -1617,7 +1617,7 @@ extern "C" void eftsan_mpfr_llvm_cos_f64(smem_entry* op1,
 
 }
 
-extern "C" void eftsan_mpfr_atan(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_atan(smem_entry* op1, 
 				double op1d,
 				smem_entry* res, 
 				double computedRes,
@@ -1630,7 +1630,7 @@ extern "C" void eftsan_mpfr_atan(smem_entry* op1,
   handle_math_d_long(ATAN, op1d, op1, computedRes, res, linenumber, ts);
 }
 
-extern "C" void eftsan_mpfr_llvm_ceil(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_llvm_ceil(smem_entry* op1, 
 				     double op1d,
 				     smem_entry* res, 
 				     double computedRes,
@@ -1644,7 +1644,7 @@ extern "C" void eftsan_mpfr_llvm_ceil(smem_entry* op1,
 
 }
 
-extern "C" void eftsan_mpfr_llvm_floor(smem_entry* op1Idx, 
+extern "C" void fpccsan_mpfr_llvm_floor(smem_entry* op1Idx, 
 				      double op1d,
 				      smem_entry* res, 
 				      double computedRes,
@@ -1658,7 +1658,7 @@ extern "C" void eftsan_mpfr_llvm_floor(smem_entry* op1Idx,
 
 }
 
-extern "C" void eftsan_mpfr_llvm_floor_f(smem_entry* op1Idx, 
+extern "C" void fpccsan_mpfr_llvm_floor_f(smem_entry* op1Idx, 
 				      double op1d,
 				      smem_entry* res, 
 				      double computedRes,
@@ -1671,7 +1671,7 @@ extern "C" void eftsan_mpfr_llvm_floor_f(smem_entry* op1Idx,
   handle_math_d_long(FLOOR, op1d, op1Idx, computedRes, res, linenumber, ts);
 }
 
-extern "C" void eftsan_mpfr_expf(smem_entry* op1Idx, 
+extern "C" void fpccsan_mpfr_expf(smem_entry* op1Idx, 
 			   float op1d,
 			   smem_entry* res, 
 			   float computedRes,
@@ -1684,7 +1684,7 @@ extern "C" void eftsan_mpfr_expf(smem_entry* op1Idx,
   handle_math_d_long(EXP, op1d, op1Idx, computedRes, res, linenumber, ts);
 }
 
-extern "C" void eftsan_mpfr_exp(smem_entry* op1Idx, 
+extern "C" void fpccsan_mpfr_exp(smem_entry* op1Idx, 
 			   double op1d,
 			   smem_entry* res, 
 			   double computedRes,
@@ -1698,7 +1698,7 @@ extern "C" void eftsan_mpfr_exp(smem_entry* op1Idx,
 
 }
 
-extern "C" void eftsan_mpfr_llvm_exp64(smem_entry* op1Idx, 
+extern "C" void fpccsan_mpfr_llvm_exp64(smem_entry* op1Idx, 
 			   double op1d,
 			   smem_entry* res, 
 			   double computedRes,
@@ -1712,7 +1712,7 @@ extern "C" void eftsan_mpfr_llvm_exp64(smem_entry* op1Idx,
 
 }
 
-extern "C" void eftsan_mpfr_frexpf2(smem_entry* op1Idx, 
+extern "C" void fpccsan_mpfr_frexpf2(smem_entry* op1Idx, 
 			   float op1d,
          int* ex,
 			   smem_entry* res, 
@@ -1744,7 +1744,7 @@ extern "C" void eftsan_mpfr_frexpf2(smem_entry* op1Idx,
 }
 
 
-extern "C" double eftsan_handle_SUBADD(double lhs, double rhs, double ret, double lfit, double rfit) {
+extern "C" double fpccsan_handle_SUBADD(double lhs, double rhs, double ret, double lfit, double rfit) {
     double cond1, cond2, dzdist;
     double res;
     dzdist = fabs(ret);
@@ -1772,7 +1772,7 @@ extern "C" double eftsan_handle_SUBADD(double lhs, double rhs, double ret, doubl
     }
     return cond1;
 }
-extern "C" void eftsan_mpfr_GSL_MIN_DBL2(smem_entry* op1Idx, double op1d, 
+extern "C" void fpccsan_mpfr_GSL_MIN_DBL2(smem_entry* op1Idx, double op1d, 
 					smem_entry* op2Idx, double op2d, 
 					smem_entry* res, double computedRes,
 					unsigned long long int instId, 
@@ -1814,10 +1814,10 @@ extern "C" void eftsan_mpfr_GSL_MIN_DBL2(smem_entry* op1Idx, double op1d,
   m_get_error(res, computedRes);
 }
 
-//extern "C" void eftsan_mpfr_GSL_MAX_DBL2(smem_entry* op1Idx, double op1d, 
+//extern "C" void fpccsan_mpfr_GSL_MAX_DBL2(smem_entry* op1Idx, double op1d, 
 	//				smem_entry* op2Idx, smem_entry* rhs, double op2d, 
 
-extern "C" void eftsan_mpfr_GSL_MAX_DBL2(smem_entry* op1Idx, double op1d, 
+extern "C" void fpccsan_mpfr_GSL_MAX_DBL2(smem_entry* op1Idx, double op1d, 
 					smem_entry* op2Idx, double op2d, 
 					smem_entry* res, double computedRes,
 					unsigned long long int instId, 
@@ -1854,7 +1854,7 @@ extern "C" void eftsan_mpfr_GSL_MAX_DBL2(smem_entry* op1Idx, double op1d,
   m_get_error(res, computedRes);
 }
 
-extern "C" void eftsan_mpfr_ldexp2(smem_entry* op1Idx, double op1d, 
+extern "C" void fpccsan_mpfr_ldexp2(smem_entry* op1Idx, double op1d, 
 				  int op2d, 
 				  smem_entry* res, double computedRes,
 				  unsigned long long int instId, 
@@ -1891,7 +1891,7 @@ extern "C" void eftsan_mpfr_ldexp2(smem_entry* op1Idx, double op1d,
   m_get_error(res, computedRes);
 }
 
-extern "C" void eftsan_mpfr_fmod2(smem_entry* op1Idx, double op1d, 
+extern "C" void fpccsan_mpfr_fmod2(smem_entry* op1Idx, double op1d, 
 				 smem_entry* op2Idx, double op2d, 
 				 smem_entry* res, double computedRes,
 				 unsigned long long int instId, 
@@ -1928,7 +1928,7 @@ extern "C" void eftsan_mpfr_fmod2(smem_entry* op1Idx, double op1d,
   m_get_error(res, computedRes);
 }
 
-extern "C" void eftsan_mpfr_atan22(smem_entry* op1Idx, double op1d, 
+extern "C" void fpccsan_mpfr_atan22(smem_entry* op1Idx, double op1d, 
 				  smem_entry* op2Idx, double op2d, 
 				  smem_entry* res, double computedRes,
 				  unsigned long long int instId, 
@@ -1967,7 +1967,7 @@ extern "C" void eftsan_mpfr_atan22(smem_entry* op1Idx, double op1d,
   m_get_error(res, computedRes);
 }
 
-extern "C" void eftsan_mpfr_hypot2(smem_entry* op1Idx, double op1d, 
+extern "C" void fpccsan_mpfr_hypot2(smem_entry* op1Idx, double op1d, 
 				  smem_entry* op2Idx, double op2d, 
 				  smem_entry* res, double computedRes,
 				  unsigned long long int instId, 
@@ -2001,7 +2001,7 @@ extern "C" void eftsan_mpfr_hypot2(smem_entry* op1Idx, double op1d,
   m_get_error(res, computedRes);
 }
 
-extern "C" void eftsan_mpfr_powf2(smem_entry* op1Idx, float op1d, 
+extern "C" void fpccsan_mpfr_powf2(smem_entry* op1Idx, float op1d, 
 				smem_entry* op2Idx, float op2d, 
 				smem_entry* res, float computedRes,
 				unsigned long long int instId,  
@@ -2047,7 +2047,7 @@ extern "C" void eftsan_mpfr_powf2(smem_entry* op1Idx, float op1d,
   m_get_error(res, computedRes);
 }
 
-extern "C" void eftsan_mpfr_llvm_powi2(smem_entry* op1Idx, double op1d, 
+extern "C" void fpccsan_mpfr_llvm_powi2(smem_entry* op1Idx, double op1d, 
 				int x, smem_entry* res, double computedRes,
 				unsigned long long int instId,  
         bool debugInfoAvail,
@@ -2080,7 +2080,7 @@ extern "C" void eftsan_mpfr_llvm_powi2(smem_entry* op1Idx, double op1d,
   m_get_error(res, computedRes);
 }
 
-extern "C" void eftsan_mpfr_pow2(smem_entry* op1Idx, double op1d, 
+extern "C" void fpccsan_mpfr_pow2(smem_entry* op1Idx, double op1d, 
 				smem_entry* op2Idx, double op2d, 
 				smem_entry* res, double computedRes,
 				unsigned long long int instId,  
@@ -2115,7 +2115,7 @@ extern "C" void eftsan_mpfr_pow2(smem_entry* op1Idx, double op1d,
   m_get_error(res, computedRes);
 }
 
-extern "C" void eftsan_mpfr_sqrtf(smem_entry* op1Idx,
+extern "C" void fpccsan_mpfr_sqrtf(smem_entry* op1Idx,
     float op1d,
     smem_entry* res,
     float computedRes,
@@ -2138,7 +2138,7 @@ extern "C" void eftsan_mpfr_sqrtf(smem_entry* op1Idx,
   m_get_error(res, computedRes);
 }
 
-extern "C" void eftsan_mpfr_sqrt(smem_entry* op1Idx,
+extern "C" void fpccsan_mpfr_sqrt(smem_entry* op1Idx,
     double op1d,
     smem_entry* res,
     double computedRes,
@@ -2161,7 +2161,7 @@ extern "C" void eftsan_mpfr_sqrt(smem_entry* op1Idx,
   m_get_error(res, computedRes);
 }
 
-extern "C" void eftsan_mpfr_llvm_sqrt64(smem_entry* op1Idx,
+extern "C" void fpccsan_mpfr_llvm_sqrt64(smem_entry* op1Idx,
     double op1d,
     smem_entry* res,
     double computedRes,
@@ -2184,7 +2184,7 @@ extern "C" void eftsan_mpfr_llvm_sqrt64(smem_entry* op1Idx,
   m_get_error(res, computedRes);
 }
 
-extern "C" void eftsan_mpfr_llvm_fabs32(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_llvm_fabs32(smem_entry* op1, 
 				     float op1d,
 				     smem_entry* res, 
 				     float computedRes,
@@ -2197,7 +2197,7 @@ extern "C" void eftsan_mpfr_llvm_fabs32(smem_entry* op1,
   handle_math_d_long(ABS, op1d, op1, computedRes, res, linenumber, ts);
 }
 
-extern "C" void eftsan_mpfr_llvm_fabs(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_llvm_fabs(smem_entry* op1, 
 				     double op1d,
 				     smem_entry* res, 
 				     double computedRes,
@@ -2210,7 +2210,7 @@ extern "C" void eftsan_mpfr_llvm_fabs(smem_entry* op1,
   handle_math_d_long(ABS, op1d, op1, computedRes, res, linenumber, ts);
 }
 
-extern "C" void eftsan_mpfr_abs(smem_entry* op1,
+extern "C" void fpccsan_mpfr_abs(smem_entry* op1,
              smem_entry* res,
 			       double op1d, double computedRes,
 			       unsigned long long int instId,
@@ -2222,7 +2222,7 @@ extern "C" void eftsan_mpfr_abs(smem_entry* op1,
   handle_math_d_long(ABS, op1d, op1, computedRes, res, linenumber, ts);
 }
 
-extern "C" void eftsan_mpfr_log10(smem_entry* op1,
+extern "C" void fpccsan_mpfr_log10(smem_entry* op1,
              smem_entry* res,
 			       double op1d, double computedRes,
 			       unsigned long long int instId,
@@ -2233,7 +2233,7 @@ extern "C" void eftsan_mpfr_log10(smem_entry* op1,
   handle_math_d_long(LOG10, op1d, op1, computedRes, res, linenumber, ts);
 }
 
-extern "C" void eftsan_mpfr_log1p(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_log1p(smem_entry* op1, 
              smem_entry* res,
 			       double op1d, double computedRes,
 			       unsigned long long int instId,
@@ -2243,7 +2243,7 @@ extern "C" void eftsan_mpfr_log1p(smem_entry* op1,
 
   handle_math_d_long(LOG1P, op1d, op1, computedRes, res, linenumber, ts);
 }
-extern "C" void eftsan_mpfr_log(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_log(smem_entry* op1, 
              smem_entry* res,
 			       double op1d, double computedRes,
 			       unsigned long long int instId,
@@ -2254,7 +2254,7 @@ extern "C" void eftsan_mpfr_log(smem_entry* op1,
   handle_math_d_long(LOG, op1d, op1, computedRes, res, linenumber, ts);
 }
 
-extern "C" void eftsan_mpfr_llvm_log64(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_llvm_log64(smem_entry* op1, 
              smem_entry* res,
 			       double op1d, double computedRes,
 			       unsigned long long int instId,
@@ -2264,7 +2264,7 @@ extern "C" void eftsan_mpfr_llvm_log64(smem_entry* op1,
 
   handle_math_d_long(LOG, op1d, op1, computedRes, res, linenumber, ts);
 }
-extern "C" void eftsan_mpfr_asinh(smem_entry* op1, 
+extern "C" void fpccsan_mpfr_asinh(smem_entry* op1, 
         smem_entry* res,
 				double op1d, double computedRes,
 				unsigned long long int instId,
@@ -2275,7 +2275,7 @@ extern "C" void eftsan_mpfr_asinh(smem_entry* op1,
   handle_math_d_long(ASINH, op1d, op1, computedRes, res, linenumber, ts);
 }
 
-extern "C" void eftsan_mpfr_sinh(smem_entry* op1,
+extern "C" void fpccsan_mpfr_sinh(smem_entry* op1,
         smem_entry* res,
 				double op1d, double computedRes,
 				unsigned long long int instId,
@@ -2286,7 +2286,7 @@ extern "C" void eftsan_mpfr_sinh(smem_entry* op1,
   handle_math_d_long(SINH, op1d, op1, computedRes, res, linenumber, ts);
 }
 
-extern "C" void eftsan_mpfr_sin(smem_entry* op1,
+extern "C" void fpccsan_mpfr_sin(smem_entry* op1,
              smem_entry* res,
 			       double op1d, double computedRes,
 			       unsigned long long int instId,
@@ -2296,7 +2296,7 @@ extern "C" void eftsan_mpfr_sin(smem_entry* op1,
   handle_math_d_long(SIN, op1d, op1, computedRes, res, linenumber, ts);
 }
 
-extern "C" void eftsan_mpfr_llvm_sin_f64(smem_entry* op1,
+extern "C" void fpccsan_mpfr_llvm_sin_f64(smem_entry* op1,
              smem_entry* res,
 			       double op1d, double computedRes,
 			       unsigned long long int instId,
@@ -2306,7 +2306,7 @@ extern "C" void eftsan_mpfr_llvm_sin_f64(smem_entry* op1,
   handle_math_d_long(SIN, op1d, op1, computedRes, res, linenumber, ts);
 }
 
-extern "C" void eftsan_mpfr_asin(smem_entry* op1,
+extern "C" void fpccsan_mpfr_asin(smem_entry* op1,
 				smem_entry* res,
 				double op1d,
 				double computedRes,

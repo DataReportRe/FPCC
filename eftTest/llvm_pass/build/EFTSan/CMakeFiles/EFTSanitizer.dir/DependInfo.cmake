@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/fpcc/eftTest/copy_file/llvm_pass/EFTSan/EFTSanitizer.cpp" "/fpcc/eftTest/copy_file/llvm_pass/build/EFTSan/CMakeFiles/EFTSanitizer.dir/EFTSanitizer.cpp.o"
+  "/fpcc/eftTest/llvm_pass/EFTSan/EFTSanitizer.cpp" "/fpcc/eftTest/llvm_pass/build/EFTSan/CMakeFiles/EFTSanitizer.dir/EFTSanitizer.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "Clang")
 

@@ -26,8 +26,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${SCL_OUTPUT_DIRECTORY})
 set(COMMON_INCLUDES ${PROJECT_SOURCE_DIR}/src)
 
 file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
-add_executable(${PROJECT_NAME_STR}_test ${SRC_FILES})
-target_link_libraries(${PROJECT_NAME_STR}_test PRIVATE m)
+#add_executable(${PROJECT_NAME_STR}_test ${SRC_FILES})
+#target_link_libraries(${PROJECT_NAME_STR}_test PRIVATE m)
 
 #add_library(direct_opt SHARED ${SRC_FILES})
 add_library(direct_opt STATIC ${SRC_FILES})

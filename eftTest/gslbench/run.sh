@@ -1,2 +1,3 @@
-./gsltest.fp.o
+source env.sh
+./efttest.fp.o
 

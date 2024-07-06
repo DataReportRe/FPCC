@@ -1,5 +1,21 @@
 # Detecting Floating-Point Errors via Chain Conditions
 
+## Introduction
+
+FPCC is a tool to support detecting significant floating-point errors in numerical functions. Floating point is notorious for the rounding errors, which could propagate and accumulate to unacceptable results. Detecting inputs that can trigger large floating-point errors is crucial for improving the reliability of numerical programs. Existing error-inducing input generation approaches either heavily depend on the expensive shadow executions with high precision computations or suffer from false positives. This paper introduces chain conditions to capture the propagation and accumulation of floating-point errors and utilize them to guide the search for error-inducing inputs. We conduction experiments on 88 GSL functions and 21 multiple-inputs numerical programs from FPGen's Benchmarks (https://github.com/ucd-plse/FPGen). The experimental results demonstrate the effectiveness and efficiency of FPCC:
+
+ - FPCC achieves 100\% accuracy in detecting significant errors for the reported rank-1 inputs, while 72.69\% rank-1 inputs of the state-of-the-art tool ATOMU can trigger significant errors. Overall, 99.64\% (1049/1053) of the inputs reported by FPCC can trigger significant errors, whereas only 19.45\% (141/723) of the inputs reported by ATOMU can trigger significant errors; 
+ 
+ - FPCC exhibits a 2.17x speedup over ATOMU in detecting significant errors; 
+ 
+ - FPCC also excels in supporting multiple inputs functions, outperforming FPGen (https://github.com/ucd-plse/FPGen).
+
+
+
+## Hardware Dependencies
+
+We conduct experiments on a desktop running Ubuntu 18.04 LTS with an Intel Core i9-13900 @5.20 GHz CPU and 32GB RAM. 
+
 ## Setup
 
 Install the [docker](https://www.docker.com/). Here are some guides for install [docker for Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/) and [docker for MacOS](https://docs.docker.com/docker-for-mac/install/)
@@ -60,7 +76,7 @@ $ make
 $ bin/gslSolver.out gsl <function_index> <error_trace_flag>
 ```
 
-#### Compute Relative Error (Only support GSL functions for now)
+#### Compute Relative Error
 
 Using the oracle from `mpmath` to compute the relative error:
 
@@ -90,15 +106,29 @@ The trace results will be stored in errorTrace.out
 
 ### Reproduce the Results in Paper
 
-#### Getting the results of fpcc
+Please note that it will take approximately 1.5 hours to obtain all the results mentioned in the paper.
 
-You can just run one script to get all results of fpcc in paper:
+#### Getting the results of fpcc for GSL functions
+
+You can just run one script to get all results of fpcc for GSL functions in the paper:
 
 ```
 $ python3 fpcc_test.py
 ```
 
-All results will be stored in /fpcc/result_analysis/outs_fpcc
+All results will be stored in /fpcc/result_analysis/outs_fpcc (it will take 20 minutes)
+
+#### Getting the results of fpcc for FPGen's Benchmarks
+
+You can just run one script to get all results of fpcc for 21 multiple-inputs numerical programs from FPGen's Benchmarks in the paper, it will take 35 minutes:
+
+```
+$ cd /fpcc/fpgenBench/bench
+$ ./run.sh
+```
+
+Results of Table 3 for fpcc will be stored in output2.csv
+(To obtain results for FPGen, please refer to the Readme in https://github.com/ucd-plse/FPGen. Please note that the process may take up to 63 hours and is not recommended. Alternatively, you can verify FPGen results by  FPGen's paper titled "Efficient Generation of Error-Inducing Floating-Point Inputs via Symbolic Execution." )
 
 #### Getting the results of atom
 
@@ -109,9 +139,9 @@ $ cd /atom
 $ python3 atomic_test.py
 ```
 
-All results will be stored in /fpcc/result_analysis/outs_atom
+All results will be stored in /fpcc/result_analysis/outs_atom (it will take 40 minutes)
 
-#### Getting the tables and figures in paper
+#### Getting the tables and figures for GSL fuctions in paper
 
 After get results of FPCC and ATOMU, you can just run the following script to get tables and figures in paper:
 
@@ -130,21 +160,16 @@ Figure 8 will be stored in /fpcc/result_analysis/graph/err_num_stable.pdf
 
 Figure 9 will be stored in /fpcc/result_analysis/graph/top1_err_stable.pdf
 
+
+#### Getting the results for EFTSanitier in paper
+
+
 ```
 $ cd /fpcc/eftTest/gslbench
 $ ./efttest.fp.o
 ```
 
-The results of Table 5 for eftsanitizer will output.
-
-```
-$ cd /fpcc/fpgenBench/bench
-$ ./run.sh
-```
-
-Results of Table 3 for fpcc will be stored in output2.csv
-(Results for FPGen please follow the Readme in https://github.com/ucd-plse/FPGen)
-
+The results of Table 5 for eftsanitizer will direct output.
 
 
 #### Getting the tracing results in section 5.4 and appendix

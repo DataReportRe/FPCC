@@ -1,0 +1,7 @@
+/fpcc/DiRect/build/CMakeFiles/install/strip.dir
+/fpcc/DiRect/build/CMakeFiles/edit_cache.dir
+/fpcc/DiRect/build/CMakeFiles/list_install_components.dir
+/fpcc/DiRect/build/CMakeFiles/install/local.dir
+/fpcc/DiRect/build/CMakeFiles/rebuild_cache.dir
+/fpcc/DiRect/build/CMakeFiles/direct_opt.dir
+/fpcc/DiRect/build/CMakeFiles/install.dir

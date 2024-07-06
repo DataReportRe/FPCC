@@ -13,8 +13,9 @@ RUN apt-get install -y --no-install-recommends \
   python3 \
   python3-setuptools \
   python3-pip \
-  clang-10 \
-  llvm-10 \
+  libgmp-dev \
+  libmpfr-dev \
+  llvm-10-dev \
   cmake
 
 RUN pip3 install wheel -i https://pypi.tuna.tsinghua.edu.cn/simple
@@ -25,11 +26,12 @@ RUN pip3 install numpy -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip3 install scipy -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip3 install xlutils -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip3 install matplotlib==3.0.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
-ln -s /usr/bin/clang-10 /usr/bin/clang
-ln -s /usr/bin/llc-10 /usr/bin/llc
-ln -s /usr/bin/llvm-link-10 /usr/bin/llvm-link
-ln -s /usr/bin/llvm-dis-10 /usr/bin/llvm-dis
-ln -s /usr/bin/opt-0 /usr/bin/opt
+RUN ln -s /usr/bin/clang-10 /usr/bin/clang
+RUN ln -s /usr/bin/clang++-10 /usr/bin/clang++
+RUN ln -s /usr/bin/llc-10 /usr/bin/llc
+RUN ln -s /usr/bin/llvm-link-10 /usr/bin/llvm-link
+RUN ln -s /usr/bin/llvm-dis-10 /usr/bin/llvm-dis
+RUN ln -s /usr/bin/opt-10 /usr/bin/opt
 
 
 WORKDIR /

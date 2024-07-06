@@ -4,8 +4,8 @@ cos
 sin
 tan
 cosec
-log
 exp
+log
 pow
 hypot
 llvm.floor.f64

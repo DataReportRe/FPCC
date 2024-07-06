@@ -1139,15 +1139,13 @@ int m_update_error(smem_entry *real, double computedVal){
   return bitsError;
 }
 
-//void handle_math_d_long(fp_op opCode, double op1d, smem_entry *op, 
-void handle_math_d(fp_op opCode, double op1d, smem_entry *op, 
+void handle_math_d_long(fp_op opCode, double op1d, smem_entry *op, 
 		   double computedResd, smem_entry *res,
 		   unsigned int linenumber, unsigned long long int ts) {
 
-  long double temp = 0.0;
+  double temp = 0.0;
   if(op != NULL){
     temp = op1d + op->error;
-    //printf("temp %.20Le, operr %.20e, op1d %.20e %d\n",temp,op->error,op1d,linenumber);
   }
   else{
     temp = op1d;
@@ -1251,12 +1249,11 @@ void handle_math_d(fp_op opCode, double op1d, smem_entry *op,
       break;
   }
   res->error = temp - computedResd;
-  //if(opCode == LOG || opCode == LOG10){
-  //  if(temp <= 0){
-  //    res->error = 0;
-  //  }
-  //}
-  //printf("Final temp %.20Le, resErr %.20e, computedResd %.20e\n",temp,res->error,computedResd);
+  if(opCode == LOG || opCode == LOG10){
+    if(temp <= 0){
+      res->error = 0;
+    }
+  }
   res->computed = computedResd;
   res->timestamp = ts;
 #ifdef TRACING
@@ -1269,7 +1266,7 @@ void handle_math_d(fp_op opCode, double op1d, smem_entry *op,
 }
 
 /* Math library functions */
-void handle_math_d_long(fp_op opCode, double op1d, smem_entry *op, 
+void handle_math_d(fp_op opCode, double op1d, smem_entry *op, 
 		   double computedResd, smem_entry *res,
 		   unsigned int linenumber, unsigned long long int ts) {
 
@@ -1379,11 +1376,11 @@ void handle_math_d_long(fp_op opCode, double op1d, smem_entry *op,
   }
   double shadowRounded = m_get_double(temp);
   res->error = shadowRounded - computedResd;
-  //if(opCode == LOG || opCode == LOG10){
-  //  if(op_temp <= 0){
-  //    res->error = 0;
-  //  }
-  //}
+  if(opCode == LOG || opCode == LOG10){
+    if(op_temp <= 0){
+      res->error = 0;
+    }
+  }
   res->computed = computedResd;
   res->timestamp = ts;
 #ifdef TRACING

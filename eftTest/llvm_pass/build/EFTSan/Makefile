@@ -51,10 +51,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /fpcc/eftTest/copy_file/llvm_pass
+CMAKE_SOURCE_DIR = /fpcc/eftTest/llvm_pass
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /fpcc/eftTest/copy_file/llvm_pass/build
+CMAKE_BINARY_DIR = /fpcc/eftTest/llvm_pass/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -83,14 +83,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /fpcc/eftTest/copy_file/llvm_pass/build && $(CMAKE_COMMAND) -E cmake_progress_start /fpcc/eftTest/copy_file/llvm_pass/build/CMakeFiles /fpcc/eftTest/copy_file/llvm_pass/build/EFTSan/CMakeFiles/progress.marks
-	cd /fpcc/eftTest/copy_file/llvm_pass/build && $(MAKE) -f CMakeFiles/Makefile2 EFTSan/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /fpcc/eftTest/copy_file/llvm_pass/build/CMakeFiles 0
+	cd /fpcc/eftTest/llvm_pass/build && $(CMAKE_COMMAND) -E cmake_progress_start /fpcc/eftTest/llvm_pass/build/CMakeFiles /fpcc/eftTest/llvm_pass/build/EFTSan/CMakeFiles/progress.marks
+	cd /fpcc/eftTest/llvm_pass/build && $(MAKE) -f CMakeFiles/Makefile2 EFTSan/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /fpcc/eftTest/llvm_pass/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /fpcc/eftTest/copy_file/llvm_pass/build && $(MAKE) -f CMakeFiles/Makefile2 EFTSan/clean
+	cd /fpcc/eftTest/llvm_pass/build && $(MAKE) -f CMakeFiles/Makefile2 EFTSan/clean
 .PHONY : clean
 
 # The main clean target
@@ -100,22 +100,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /fpcc/eftTest/copy_file/llvm_pass/build && $(MAKE) -f CMakeFiles/Makefile2 EFTSan/preinstall
+	cd /fpcc/eftTest/llvm_pass/build && $(MAKE) -f CMakeFiles/Makefile2 EFTSan/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /fpcc/eftTest/copy_file/llvm_pass/build && $(MAKE) -f CMakeFiles/Makefile2 EFTSan/preinstall
+	cd /fpcc/eftTest/llvm_pass/build && $(MAKE) -f CMakeFiles/Makefile2 EFTSan/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /fpcc/eftTest/copy_file/llvm_pass/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /fpcc/eftTest/llvm_pass/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 EFTSan/CMakeFiles/EFTSanitizer.dir/rule:
-	cd /fpcc/eftTest/copy_file/llvm_pass/build && $(MAKE) -f CMakeFiles/Makefile2 EFTSan/CMakeFiles/EFTSanitizer.dir/rule
+	cd /fpcc/eftTest/llvm_pass/build && $(MAKE) -f CMakeFiles/Makefile2 EFTSan/CMakeFiles/EFTSanitizer.dir/rule
 .PHONY : EFTSan/CMakeFiles/EFTSanitizer.dir/rule
 
 # Convenience name for target.
@@ -125,7 +125,7 @@ EFTSanitizer: EFTSan/CMakeFiles/EFTSanitizer.dir/rule
 
 # fast build rule for target.
 EFTSanitizer/fast:
-	cd /fpcc/eftTest/copy_file/llvm_pass/build && $(MAKE) -f EFTSan/CMakeFiles/EFTSanitizer.dir/build.make EFTSan/CMakeFiles/EFTSanitizer.dir/build
+	cd /fpcc/eftTest/llvm_pass/build && $(MAKE) -f EFTSan/CMakeFiles/EFTSanitizer.dir/build.make EFTSan/CMakeFiles/EFTSanitizer.dir/build
 .PHONY : EFTSanitizer/fast
 
 EFTSanitizer.o: EFTSanitizer.cpp.o
@@ -134,7 +134,7 @@ EFTSanitizer.o: EFTSanitizer.cpp.o
 
 # target to build an object file
 EFTSanitizer.cpp.o:
-	cd /fpcc/eftTest/copy_file/llvm_pass/build && $(MAKE) -f EFTSan/CMakeFiles/EFTSanitizer.dir/build.make EFTSan/CMakeFiles/EFTSanitizer.dir/EFTSanitizer.cpp.o
+	cd /fpcc/eftTest/llvm_pass/build && $(MAKE) -f EFTSan/CMakeFiles/EFTSanitizer.dir/build.make EFTSan/CMakeFiles/EFTSanitizer.dir/EFTSanitizer.cpp.o
 .PHONY : EFTSanitizer.cpp.o
 
 EFTSanitizer.i: EFTSanitizer.cpp.i
@@ -143,7 +143,7 @@ EFTSanitizer.i: EFTSanitizer.cpp.i
 
 # target to preprocess a source file
 EFTSanitizer.cpp.i:
-	cd /fpcc/eftTest/copy_file/llvm_pass/build && $(MAKE) -f EFTSan/CMakeFiles/EFTSanitizer.dir/build.make EFTSan/CMakeFiles/EFTSanitizer.dir/EFTSanitizer.cpp.i
+	cd /fpcc/eftTest/llvm_pass/build && $(MAKE) -f EFTSan/CMakeFiles/EFTSanitizer.dir/build.make EFTSan/CMakeFiles/EFTSanitizer.dir/EFTSanitizer.cpp.i
 .PHONY : EFTSanitizer.cpp.i
 
 EFTSanitizer.s: EFTSanitizer.cpp.s
@@ -152,7 +152,7 @@ EFTSanitizer.s: EFTSanitizer.cpp.s
 
 # target to generate assembly for a file
 EFTSanitizer.cpp.s:
-	cd /fpcc/eftTest/copy_file/llvm_pass/build && $(MAKE) -f EFTSan/CMakeFiles/EFTSanitizer.dir/build.make EFTSan/CMakeFiles/EFTSanitizer.dir/EFTSanitizer.cpp.s
+	cd /fpcc/eftTest/llvm_pass/build && $(MAKE) -f EFTSan/CMakeFiles/EFTSanitizer.dir/build.make EFTSan/CMakeFiles/EFTSanitizer.dir/EFTSanitizer.cpp.s
 .PHONY : EFTSanitizer.cpp.s
 
 # Help Target
@@ -178,6 +178,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /fpcc/eftTest/copy_file/llvm_pass/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /fpcc/eftTest/llvm_pass/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/fpcc/DiRect/src/DIRect.c
+math.h
+-
+direct-internal.h
+/fpcc/DiRect/src/direct-internal.h
+
+/fpcc/DiRect/src/DIRserial.c
+direct-internal.h
+/fpcc/DiRect/src/direct-internal.h
+
+/fpcc/DiRect/src/DIRsubrout.c
+math.h
+-
+direct-internal.h
+/fpcc/DiRect/src/direct-internal.h
+
+/fpcc/DiRect/src/direct-internal.h
+stdio.h
+-
+stdlib.h
+-
+math.h
+-
+direct.h
+/fpcc/DiRect/src/direct.h
+
+/fpcc/DiRect/src/direct.h
+math.h
+-
+stdio.h
+-
+
+/fpcc/DiRect/src/direct_wrap.c
+direct-internal.h
+/fpcc/DiRect/src/direct-internal.h
+

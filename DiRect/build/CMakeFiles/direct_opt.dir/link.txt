@@ -1,0 +1,2 @@
+/usr/bin/ar qc libdirect_opt.a  CMakeFiles/direct_opt.dir/src/DIRect.c.o CMakeFiles/direct_opt.dir/src/DIRserial.c.o CMakeFiles/direct_opt.dir/src/DIRsubrout.c.o CMakeFiles/direct_opt.dir/src/direct_wrap.c.o
+/usr/bin/ranlib libdirect_opt.a

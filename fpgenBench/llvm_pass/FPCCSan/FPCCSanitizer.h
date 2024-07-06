@@ -1,4 +1,4 @@
-//===-EFTSanitizer.h  - Interface ---------------------------------*- C++ -*-===//
+//===-FPCCSanitizer.h  - Interface ---------------------------------*- C++ -*-===//
 //
 //
 //
@@ -22,10 +22,10 @@
 using namespace llvm;
 
 namespace {
-  struct EFTSanitizer : public ModulePass {
+  struct FPCCSanitizer : public ModulePass {
   
   public:
-    EFTSanitizer() : ModulePass(ID) {}
+    FPCCSanitizer() : ModulePass(ID) {}
 
     virtual bool runOnModule(Module &module);
     long countConstants(Function *F);

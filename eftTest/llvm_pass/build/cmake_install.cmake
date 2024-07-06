@@ -1,4 +1,4 @@
-# Install script for directory: /fpcc/eftTest/copy_file/llvm_pass
+# Install script for directory: /fpcc/eftTest/llvm_pass
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/fpcc/eftTest/copy_file/llvm_pass/build/EFTSan/cmake_install.cmake")
+  include("/fpcc/eftTest/llvm_pass/build/EFTSan/cmake_install.cmake")
 
 endif()
 
@@ -51,5 +51,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/fpcc/eftTest/copy_file/llvm_pass/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/fpcc/eftTest/llvm_pass/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
