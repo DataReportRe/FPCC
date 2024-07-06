@@ -1,0 +1,5 @@
+/fpcc/fpgenBench/llvm_pass/build/CMakeFiles/rebuild_cache.dir
+/fpcc/fpgenBench/llvm_pass/build/CMakeFiles/edit_cache.dir
+/fpcc/fpgenBench/llvm_pass/build/FPCCSan/CMakeFiles/rebuild_cache.dir
+/fpcc/fpgenBench/llvm_pass/build/FPCCSan/CMakeFiles/FPCCSanitizer.dir
+/fpcc/fpgenBench/llvm_pass/build/FPCCSan/CMakeFiles/edit_cache.dir
