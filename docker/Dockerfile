@@ -16,6 +16,7 @@ RUN apt-get install -y --no-install-recommends \
   libgmp-dev \
   libmpfr-dev \
   llvm-10-dev \
+  clang-10 \
   cmake
 
 RUN pip3 install wheel -i https://pypi.tuna.tsinghua.edu.cn/simple
